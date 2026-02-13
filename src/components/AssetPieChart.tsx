@@ -45,7 +45,10 @@ export default function AssetPieChart({ assets }: AssetPieChartProps) {
                     <Tooltip
                         contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', borderRadius: '8px' }}
                         itemStyle={{ color: '#e2e8f0' }}
-                        formatter={(value: any) => `${value.toLocaleString()} 만원`}
+                        formatter={(value: number | any) => {
+                            if (value === undefined || value === null) return '0원';
+                            return `${Number(value).toLocaleString()} 만원`;
+                        }}
                     />
                     <Legend verticalAlign="bottom" height={36} />
                 </PieChart>

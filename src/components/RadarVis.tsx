@@ -46,7 +46,10 @@ export default function RadarVis({ userData, standardData }: RadarVisProps) {
                     <Tooltip
                         contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#f8fafc' }}
                         itemStyle={{ color: '#f8fafc' }}
-                        formatter={(value: number) => `₩${(value / 10000).toFixed(0)}만`}
+                        formatter={(value: number | any) => {
+                            if (value === undefined || value === null) return '0만';
+                            return `₩${(Number(value) / 10000).toFixed(0)}만`;
+                        }}
                     />
                 </RadarChart>
             </ResponsiveContainer>
