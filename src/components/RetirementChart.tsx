@@ -56,7 +56,10 @@ export default function RetirementChart({ financeState }: RetirementChartProps) 
                     <Tooltip
                         contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', borderRadius: '8px' }}
                         itemStyle={{ color: '#10B981' }}
-                        formatter={(value: number) => [`${(value / 10000).toFixed(2)}억원`, '예상 순자산']}
+                        formatter={(value: number | any) => {
+                            if (value === undefined || value === null) return ['0원', '예상 순자산'];
+                            return [`${(Number(value) / 10000).toFixed(2)}억원`, '예상 순자산'];
+                        }}
                     />
                     <ReferenceLine x={`${financeState.retirementAge}세`} stroke="#F59E0B" strokeDasharray="3 3" label={{ position: 'top', value: '은퇴', fill: '#F59E0B', fontSize: 12 }} />
                     <Area
