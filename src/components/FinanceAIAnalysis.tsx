@@ -44,7 +44,7 @@ export default function FinanceAIAnalysis({ financeState }: FinanceAIAnalysisPro
         allocationAdvice = "현금 비중이 매우 높습니다. 인플레이션 방어를 위해 투자 자산(주식, 부동산 등) 비중을 늘리는 것을 고려해보세요.";
     } else if (ratios.crypto > 20) {
         allocationAdvice = "변동성이 큰 자산(암호화폐 등) 비중이 높습니다. 포트폴리오 안정성을 위해 분산 투자가 필요합니다.";
-    } else if (ratios.shares > 70) { // Assuming 'stock' maps to aggressive
+    } else if (ratios.stock > 70) { // Assuming 'stock' maps to aggressive
         allocationAdvice = "공격적인 투자 성향을 보이고 계십니다. 은퇴가 가까워질수록 채권 등 안전 자산 비중을 늘려 리스크를 관리하세요.";
     } else {
         allocationAdvice = "비교적 균형 잡힌 자산 배분을 유지하고 계십니다. 정기적인 리밸런싱을 통해 목표 수익률을 점검하세요.";
