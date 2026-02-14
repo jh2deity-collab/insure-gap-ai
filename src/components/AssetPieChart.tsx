@@ -3,11 +3,13 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts"
 import { FinanceAssets } from "@/types"
 
+import { memo } from "react"
+
 interface AssetPieChartProps {
     assets: FinanceAssets;
 }
 
-export default function AssetPieChart({ assets }: AssetPieChartProps) {
+function AssetPieChart({ assets }: AssetPieChartProps) {
     const trackedStockValue = assets.trackedStocks?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
     const trackedCryptoValue = assets.trackedCrypto?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
 
@@ -63,3 +65,5 @@ export default function AssetPieChart({ assets }: AssetPieChartProps) {
         </div>
     )
 }
+
+export default memo(AssetPieChart)

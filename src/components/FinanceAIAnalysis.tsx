@@ -123,15 +123,16 @@ export default function FinanceAIAnalysis({ financeState }: FinanceAIAnalysisPro
                 // Mock gap analysis result as it's not used in finance mode action plans
                 const mockGapRes = { score: 100, gapCount: 0 };
                 // Creating a partial user state to satisfy types (only age is accessed in finance mode)
-                const pseudoUser = { age, name: '', gender: (financeState.gender || 'male') as 'male' | 'female', coverages: { cancer: 0, brain: 0, heart: 0, medical: 0, death: 0 } };
-                const actions = getActionPlan(pseudoUser, financeState, mockGapRes, 'finance');
+                const pseudoUser = { age, name: '', birthDate: financeState.birthDate, gender: (financeState.gender || 'male') as 'male' | 'female', coverages: { cancer: 0, brain: 0, heart: 0, medical: 0, death: 0 } };
+                const roadmap = getActionPlan(pseudoUser, financeState, mockGapRes, 'finance');
+                const allActions = [...roadmap.shortTerm.items, ...roadmap.midTerm.items];
                 return (
                     <div className="mt-8 pt-8 border-t border-slate-700">
                         <h4 className="text-white font-bold mb-6 flex items-center gap-2">
                             <TrendingUp className="w-5 h-5 text-emerald-400" /> 핵심 액션 플랜 (Action Plan)
                         </h4>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            {actions.map((action, i) => (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {allActions.map((action, i) => (
                                 <div key={i} className="bg-slate-900/50 p-4 rounded-xl border border-slate-700 hover:border-emerald-500/30 transition-colors">
                                     <div className="text-2xl mb-2">{action.icon}</div>
                                     <h5 className="font-bold text-emerald-400 text-xs mb-2">{action.title}</h5>

@@ -2,16 +2,27 @@
 
 import { Label } from "@/components/ui/label"
 import { FinanceState } from "@/types"
-import { Wallet, Briefcase, TrendingUp } from "lucide-react"
+import { Wallet, Briefcase, TrendingUp, Sparkles } from "lucide-react"
+import { useState } from "react"
 
 interface FinanceInputProps {
     financeState: FinanceState;
-    onChange: (key: string, value: string | number | { key: string; value: number }) => void;
+    onChange: (key: string, value: string | number | { key: string; value: number | any } | any) => void;
 }
 
 import MarketAssetInput from "./MarketAssetInput"
+import FinancialMbtiTest from "./FinancialMbtiTest"
+import FinancialMbtiResult from "./FinancialMbtiResult"
 
 export default function FinanceInput({ financeState, onChange }: FinanceInputProps) {
+    const [isMbtiOpen, setIsMbtiOpen] = useState(false)
+    const [isMbtiResultOpen, setIsMbtiResultOpen] = useState(false)
+
+    const handleMbtiComplete = (result: any) => {
+        onChange('financialProfile', { ...result, timestamp: new Date().toISOString() })
+        setIsMbtiOpen(false)
+        setIsMbtiResultOpen(true) // Show result immediately after test
+    }
 
     const assetInputs = [
         { key: 'cash', label: '현금/예금 (Cash)', step: 100 },
@@ -25,11 +36,49 @@ export default function FinanceInput({ financeState, onChange }: FinanceInputPro
     return (
         <div className="space-y-6 bg-slate-800/50 p-6 rounded-xl border border-slate-700 h-full overflow-y-auto max-h-[700px]">
 
+            {/* MBTI Modals */}
+            {isMbtiOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md relative">
+                        <button
+                            onClick={() => setIsMbtiOpen(false)}
+                            className="absolute top-4 right-4 text-slate-400 hover:text-white"
+                        >
+                            ✕
+                        </button>
+                        <FinancialMbtiTest onComplete={handleMbtiComplete} />
+                    </div>
+                </div>
+            )}
+
+            {isMbtiResultOpen && financeState.financialProfile && (
+                <FinancialMbtiResult
+                    result={financeState.financialProfile}
+                    onClose={() => setIsMbtiResultOpen(false)}
+                />
+            )}
+
             {/* 1. Basic Info */}
             <div>
-                <h3 className="text-blue-400 font-bold mb-4 flex items-center gap-2">
-                    <Briefcase className="w-4 h-4" /> 기본 정보
-                </h3>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-blue-400 font-bold flex items-center gap-2">
+                        <Briefcase className="w-4 h-4" /> 기본 정보
+                    </h3>
+
+                    {/* MBTI Trigger Button */}
+                    <button
+                        onClick={() => financeState.financialProfile ? setIsMbtiResultOpen(true) : setIsMbtiOpen(true)}
+                        className={`text-xs px-3 py-1.5 rounded-full font-bold transition-all border ${financeState.financialProfile
+                            ? 'bg-purple-500/10 text-purple-400 border-purple-500/50 hover:bg-purple-500/20'
+                            : 'bg-slate-700 text-slate-300 border-slate-600 hover:bg-slate-600'}`}
+                    >
+                        <span className="flex items-center gap-1.5">
+                            <Sparkles className="w-3 h-3" />
+                            {financeState.financialProfile ? `금융성향: ${financeState.financialProfile.type}` : '금융성향 테스트'}
+                        </span>
+                    </button>
+                </div>
+
                 <div className="space-y-4">
                     <div>
                         <Label className="text-slate-400 mb-2 block">성함 (Name)</Label>

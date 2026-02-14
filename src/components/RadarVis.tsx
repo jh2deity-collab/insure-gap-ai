@@ -3,12 +3,14 @@
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend, Tooltip } from "recharts"
 import { CoverageData } from "@/types"
 
+import { memo } from "react"
+
 interface RadarVisProps {
     userData: CoverageData;
     standardData: CoverageData;
 }
 
-export default function RadarVis({ userData, standardData }: RadarVisProps) {
+function RadarVis({ userData, standardData }: RadarVisProps) {
     const data = [
         { subject: '암 진단비', A: userData.cancer, B: standardData.cancer, fullMark: 10000 },
         { subject: '뇌혈관', A: userData.brain, B: standardData.brain, fullMark: 10000 },
@@ -56,3 +58,5 @@ export default function RadarVis({ userData, standardData }: RadarVisProps) {
         </div>
     )
 }
+
+export default memo(RadarVis)

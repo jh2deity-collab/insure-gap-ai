@@ -88,7 +88,7 @@ export default function AIConsulting({ userState, financeState, mode }: AIConsul
                             <div className="w-16 h-16 border-4 border-blue-500/20 border-t-blue-500 rounded-full animate-spin" />
                             <Sparkles className="w-6 h-6 text-yellow-500 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                         </div>
-                        <p className="text-blue-400 font-bold animate-pulse">Gemini AI가 데이터를 심층 분석 중입니다...</p>
+                        <p className="text-blue-400 font-bold animate-pulse">OpenAI가 데이터를 심층 분석 중입니다...</p>
                         <p className="text-slate-500 text-xs mt-2 italic">최대 10초 정도 소요될 수 있습니다.</p>
                     </motion.div>
                 ) : error ? (
@@ -102,7 +102,7 @@ export default function AIConsulting({ userState, financeState, mode }: AIConsul
                         <div>
                             <h4 className="text-red-500 font-bold mb-1">분석 실패</h4>
                             <p className="text-red-400/80 text-sm">{error}</p>
-                            <p className="text-red-400/50 text-[10px] mt-2 italic">* .env.local에 API 키가 설정되어 있는지 확인해주세요.</p>
+                            <p className="text-red-400/50 text-[10px] mt-2 italic">* .env.local에 OPENAI_API_KEY가 설정되어 있는지 확인해주세요.</p>
                         </div>
                     </motion.div>
                 ) : advice ? (
@@ -118,7 +118,7 @@ export default function AIConsulting({ userState, financeState, mode }: AIConsul
                         </div>
                         <div className="mt-8 flex justify-end">
                             <p className="text-slate-500 text-[10px] italic flex items-center gap-1">
-                                <Sparkles className="w-3 h-3" /> Powered by Google Gemini 1.5 Flash
+                                <Sparkles className="w-3 h-3" /> Powered by OpenAI GPT-4o
                             </p>
                         </div>
                     </motion.div>

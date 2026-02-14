@@ -36,73 +36,110 @@ export default function ReportPDF({
 
     return (
         <div className="bg-slate-100 p-0 w-[800px] font-sans">
-            {/* PAGE 1: PROFESSIONAL COVER */}
-            <div className="pdf-page bg-white p-12 mb-4 min-h-[1100px] flex flex-col shadow-sm relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full -mr-32 -mt-32" />
-                <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-600/5 rounded-full -ml-48 -mb-48" />
+            {/* PAGE 1: PROFESSIONAL COVER (V2 PREMIUM DARK) */}
+            <div className="pdf-page bg-slate-900 p-16 mb-4 min-h-[1100px] flex flex-col shadow-sm relative overflow-hidden text-white">
+                {/* Decorative Elements */}
+                <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/10 rounded-full -mr-96 -mt-96 blur-3xl opacity-50" />
+                <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full -ml-48 -mb-48 blur-3xl opacity-30" />
+                <div className="absolute top-1/2 left-0 w-2 h-32 bg-blue-600 opacity-50" />
 
-                <div className="flex justify-between items-start border-b-8 border-blue-600 pb-12 mb-16 relative z-10">
-                    <div>
-                        <div className="flex items-center gap-3 text-blue-600 mb-6">
-                            <Shield className="w-12 h-12 fill-blue-600" />
-                            <span className="text-4xl font-black tracking-tighter italic">INSURE-GAP AI</span>
+                <div className="flex flex-col h-full relative z-10">
+                    <div className="flex justify-between items-start mb-24">
+                        <div className="flex items-center gap-3">
+                            <Shield className="w-16 h-16 text-blue-500 fill-blue-500/10" />
+                            <span className="text-4xl font-black tracking-tighter italic text-white">INSURE-GAP AI</span>
                         </div>
-                        <h1 className="text-3xl font-black text-slate-900 mb-6 leading-[1.1]">
-                            {mode === 'insurance' ? '보험 보장 정밀 진단' : '프리미엄 재무 분석'}<br />
-                            <span className="text-blue-600">통합 솔루션</span> 보고서
-                        </h1>
-                        <p className="text-slate-500 text-xl font-medium tracking-wide">
-                            AI-Driven Advanced {mode === 'insurance' ? 'Insurance' : 'Financial'} Consulting Solution
-                        </p>
+                        <div className="border border-slate-700 bg-slate-800/50 px-6 py-2 rounded-full font-black text-[10px] tracking-[0.3em] uppercase text-blue-400">V2.0 ADVANCED ANALYTICS</div>
                     </div>
-                    <div className="text-right">
-                        <div className="bg-slate-900 text-white px-6 py-2 rounded-xl font-bold mb-6 text-sm tracking-widest inline-block">PREMIUM REPORT</div>
-                        <div className="space-y-1 text-slate-400 font-medium">
-                            <p className="text-sm">발행일: {new Date().toLocaleDateString()}</p>
-                            <p className="text-sm">분석 ID: #IG-{Math.floor(Math.random() * 90000) + 10000}</p>
-                            <p className="text-sm">보안등급: 대외비 (Confidential)</p>
+
+                    <div className="flex-1 flex flex-col justify-center">
+                        <div className="inline-block bg-blue-600 px-4 py-1 rounded text-[10px] font-black tracking-widest uppercase mb-8">Expert Consulting Report</div>
+                        <h1 className="text-7xl font-black text-white mb-10 leading-[1.05] tracking-tighter">
+                            {mode === 'insurance' ? '보험 보장 정밀 진단' : '프리미엄 재무 분석'}<br />
+                            <span className="text-blue-500 underline decoration-blue-600/30 underline-offset-[12px]">통합 솔루션 리포트</span>
+                        </h1>
+                        <p className="text-slate-400 text-2xl font-medium tracking-wide mb-16 max-w-xl leading-relaxed">
+                            AI 엔진이 분석한 {(mode === 'insurance' ? userState.name : financeState.name) || "고객"}님의 자산 건전성 및 미래 리스크 관리 전략
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-10 max-w-3xl">
+                            <div className="bg-white/5 backdrop-blur-xl p-10 rounded-[40px] border border-white/10 shadow-2xl">
+                                <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-3 text-blue-400">Client Profile</p>
+                                <p className="text-2xl font-black text-white">{(mode === 'insurance' ? userState.name : financeState.name) || "고객"} 님</p>
+                                <div className="mt-4 flex items-center gap-2 text-slate-400 font-bold">
+                                    <span>{mode === 'insurance' ? userState.birthDate : financeState.birthDate}</span>
+                                    <span className="w-1 h-1 bg-slate-600 rounded-full" />
+                                    <span>만 {mode === 'insurance' ? userState.age : financeState.age}세</span>
+                                </div>
+                            </div>
+                            <div className="bg-white/5 backdrop-blur-xl p-10 rounded-[40px] border border-white/10 shadow-2xl">
+                                <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest mb-3 text-blue-400">Analysis Summary</p>
+                                <p className="text-2xl font-black text-white">{new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                <div className="mt-4 flex items-center gap-2 text-slate-400 font-bold">
+                                    <span>ID: #ISG-{(Math.floor(Math.random() * 90000) + 10000)}</span>
+                                    <span className="w-1 h-1 bg-slate-600 rounded-full" />
+                                    <span className="text-emerald-500">Verified</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-20 border-t border-slate-800 pt-16 flex justify-between items-center text-slate-500">
+                        <div className="space-y-3">
+                            <p className="text-[10px] font-black uppercase tracking-[0.5em] text-blue-600">Confidential Security</p>
+                            <p className="text-xs font-bold leading-relaxed max-w-md">본 리포트의 지적 재산권은 INSURE-GAP AI에 있으며,<br />공인된 전문가의 가이드 없이 무단 복제 및 배포를 금합니다.</p>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="text-right">
+                                <p className="font-black text-white italic tracking-tighter text-xl">TRUSTED ADVISORY</p>
+                                <p className="text-[8px] font-bold text-slate-600 uppercase tracking-widest">Global Financial Intelligence</p>
+                            </div>
+                            <Activity className="w-10 h-10 text-blue-600" />
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div className="flex-1 flex flex-col justify-center relative z-10">
-                    <div className="grid grid-cols-2 gap-12 mb-16">
-                        <div className="space-y-6">
-                            <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm">Client Information</h3>
-                            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                                <p className="text-2xl font-bold text-slate-800">{(mode === 'insurance' ? userState.name : financeState.name) || "고객"}님 ({mode === 'insurance' ? userState.birthDate : financeState.birthDate}생, 만 {mode === 'insurance' ? userState.age : financeState.age}세 {(mode === 'insurance' ? userState.gender : financeState.gender) === 'male' ? '남성' : '여성'})</p>
-                                <p className="text-slate-500 mt-1">{mode === 'insurance' ? '보장 분석' : '재무 설계'} 대상자</p>
+            {/* PAGE 1.5: TABLE OF CONTENTS (V2 REFINED) */}
+            <div className="pdf-page bg-white p-16 mb-4 min-h-[1100px] flex flex-col shadow-sm">
+                <div className="flex-1 flex flex-col justify-center">
+                    <h2 className="text-sm font-black text-blue-600 uppercase tracking-[0.4em] mb-12 border-b border-blue-100 pb-4 inline-block">Consulting Agenda</h2>
+                    <div className="grid grid-cols-1 gap-12 max-w-2xl">
+                        <div className="space-y-6 text-2xl font-black text-slate-800 tracking-tight">
+                            <div className="flex justify-between items-end border-b-2 border-slate-50 pb-4">
+                                <span>01. 종합 진단 전문가 총평</span>
+                                <span className="text-blue-600 text-sm italic font-bold">Expert Commentary</span>
                             </div>
-                        </div>
-                        <div className="space-y-6">
-                            <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm">Analysis Overview</h3>
-                            <div className="bg-blue-600 p-6 rounded-2xl text-white shadow-lg shadow-blue-600/20">
-                                <p className="text-sm opacity-80 mb-1 font-bold">종합 진단 점수</p>
-                                <p className="text-4xl font-black">{gapAnalysis.score} <span className="text-xl font-normal opacity-60">/ 100</span></p>
+                            <div className="flex justify-between items-end border-b-2 border-slate-50 pb-4">
+                                <span>02. 상세 항목별 리스크 모델링</span>
+                                <span className="text-blue-600 text-sm italic font-bold">Risk Breakdown</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-slate-900 rounded-[40px] p-12 text-white relative overflow-hidden shadow-2xl">
-                        <div className="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none">
-                            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                                <path d="M0 100 L100 0 L100 100 Z" fill="currentColor" />
-                            </svg>
-                        </div>
-                        <h2 className="text-2xl font-black mb-8 flex items-center gap-3 text-blue-400">
-                            <BookOpen className="w-7 h-7" /> Table of Contents
-                        </h2>
-                        <div className="grid grid-cols-2 gap-x-12 gap-y-6 text-slate-300 font-medium">
-                            <p>01. 종합 진단 전문가 총평</p>
-                            <p>02. 상세 {mode === 'insurance' ? '보장 내역' : '자산 구성'} 및 위험 분석</p>
-                            <p>03. 시장 상황 및 벤치마킹 비교</p>
-                            {mode === 'insurance' && <p>04. 정밀 보장 격차 Deep-Dive</p>}
-                            {mode === 'finance' && <p>04. 재무 건전성 및 현금흐름 분석</p>}
-                            <p>05. 스트레스 테스트: 시나리오 분석</p>
-                            {mode === 'finance' && <p>06. 미래 자산 수명 및 은퇴 시뮬레이션</p>}
-                            <p>{mode === 'insurance' ? '06' : '07'}. 핵심 실행 과제 (Action Plan)</p>
-                            <p>{mode === 'insurance' ? '07' : '08'}. 리스크 관리 및 점검 가이드</p>
-                            <p>{mode === 'insurance' ? '08' : '09'}. 최종 어드바이스 및 법적 고지</p>
+                            <div className="flex justify-between items-end border-b-2 border-slate-50 pb-4">
+                                <span>03. 시장 벤치마킹 및 격차 분석</span>
+                                <span className="text-blue-600 text-sm italic font-bold">Benchmark Compare</span>
+                            </div>
+                            <div className="flex justify-between items-end border-b-2 border-slate-50 pb-4">
+                                <span>{mode === 'insurance' ? '04. 보장 항목 Deep-Dive' : '04. 현금흐름 및 건전성 진단'}</span>
+                                <span className="text-blue-600 text-sm italic font-bold">Status Deep-Dive</span>
+                            </div>
+                            <div className="flex justify-between items-end border-b-2 border-slate-50 pb-4">
+                                <span>05. 스트레스 테스트: 충격 시나리오</span>
+                                <span className="text-blue-600 text-sm italic font-bold">Scenario Analysis</span>
+                            </div>
+                            {mode === 'finance' && (
+                                <div className="flex justify-between items-end border-b-2 border-slate-50 pb-4">
+                                    <span>06. 은퇴 자산 및 라이프사이클</span>
+                                    <span className="text-blue-600 text-sm italic font-bold">Longevity Plan</span>
+                                </div>
+                            )}
+                            <div className="flex justify-between items-end border-b-2 border-slate-50 pb-4">
+                                <span>{mode === 'insurance' ? '06' : '07'}. 핵심 실행 로드맵 (Roadmap)</span>
+                                <span className="text-blue-600 text-sm italic font-bold">Action Roadmap</span>
+                            </div>
+                            <div className="flex justify-between items-end border-b-2 border-slate-100 pb-4">
+                                <span>{mode === 'insurance' ? '07' : '08'}. 리스크 관리 및 정검 가이드</span>
+                                <span className="text-blue-600 text-sm italic font-bold">Ongoing Care</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -243,47 +280,110 @@ export default function ReportPDF({
                 </div>
             </div>
 
-            {/* PAGE 4: MARKET CONTEXT & BENCHMARKING */}
+            {/* PAGE 4: MARKET CONTEXT & BENCHMARKING (V2) */}
             <div className="pdf-page bg-white p-12 mb-4 min-h-[1100px] flex flex-col shadow-sm">
                 <div className="flex items-center gap-3 mb-12">
-                    <div className="bg-blue-600 text-white p-2 rounded-lg"><TrendingUp className="w-6 h-6" /></div>
-                    <h3 className="text-3xl font-black text-slate-900 tracking-tight">03. 시장 상황 및 벤치마킹 비교</h3>
+                    <div className="bg-slate-900 text-white p-2 rounded-lg"><TrendingUp className="w-6 h-6" /></div>
+                    <h3 className="text-3xl font-black text-slate-900 tracking-tight">03. 시장 벤치마킹 및 정밀 비교 분석</h3>
                 </div>
 
-                <div className="bg-slate-900 p-10 rounded-[40px] text-white mb-12 relative overflow-hidden">
+                <div className="bg-slate-50 p-10 rounded-[40px] border border-slate-100 mb-12 relative overflow-hidden">
                     <div className="absolute top-0 right-0 p-8 opacity-20"><TrendingUp className="w-32 h-32" /></div>
-                    <h4 className="text-xl font-bold text-blue-400 mb-6 tracking-tight italic">Benchmark Analysis</h4>
-                    <p className="text-lg leading-relaxed text-slate-300">
-                        {(mode === 'insurance' ? userState.name : financeState.name) || '고객'}님의 데이터와 동일 연령/성별 대조군의 평균 데이터를 비교 분석한 결과입니다.
-                        단순 평균을 넘어, 시대적 리스크인 <span className="text-white font-bold underline">인플레이션 가속화</span>와 <span className="text-white font-bold underline">질병 이환 기간 증가</span>를 고려한 보정값이 적용되었습니다.
+                    <h4 className="text-xl font-bold text-slate-800 mb-6 tracking-tight flex items-center gap-2">
+                        <Activity className="w-5 h-5 text-blue-600" /> 고급 벤치마킹 데이터 (Advanced Benchmarking)
+                    </h4>
+                    <p className="text-lg leading-relaxed text-slate-600">
+                        단순 연령대 평균을 넘어, **상위 10% 모델 포트폴리오**와의 격차를 분석했습니다. {mode === 'insurance' ? '보장 자산' : '재무 자구책'}의 질적 수준을 글로벌 금융 표준에 비추어 진단한 결과입니다.
                     </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-8 mb-12">
-                    <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 flex flex-col items-center justify-center text-center">
-                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4">
-                            <ShieldCheck className="w-8 h-8" />
+                <div className="grid grid-cols-1 gap-8 mb-12">
+                    {mode === 'insurance' ? (
+                        <div className="bg-white border-2 border-slate-900 rounded-[40px] p-10 shadow-xl">
+                            <h5 className="font-black text-slate-900 mb-8 flex justify-between items-center">
+                                <span>주요 보장별 벤치마크 대조 (만원)</span>
+                                <span className="bg-slate-900 text-white text-[10px] px-3 py-1 rounded-full uppercase">Top 10% vs You</span>
+                            </h5>
+                            <div className="space-y-8">
+                                {(['cancer', 'brain', 'heart', 'death'] as const).map((key) => {
+                                    const userVal = userState.coverages[key];
+                                    const top10Val = (expertCommentary.benchmarks.top10 as any)[key];
+                                    const avgVal = (expertCommentary.benchmarks.average as any)[key];
+                                    const percentage = Math.min((userVal / top10Val) * 100, 100);
+
+                                    return (
+                                        <div key={key} className="space-y-3">
+                                            <div className="flex justify-between items-end">
+                                                <p className="font-bold text-slate-700 capitalize text-sm">{key === 'cancer' ? '암 진단비' : key === 'brain' ? '뇌질환' : key === 'heart' ? '심장질환' : '사망보장'}</p>
+                                                <p className="text-xs font-black text-slate-400">Target: {top10Val.toLocaleString()} / <span className="text-slate-900">Current: {userVal.toLocaleString()}</span></p>
+                                            </div>
+                                            <div className="h-4 bg-slate-100 rounded-full overflow-hidden flex relative">
+                                                <div className="absolute left-[66%] top-0 bottom-0 w-0.5 bg-slate-300 z-10" title="Average" />
+                                                <div
+                                                    className={`h-full transition-all duration-1000 ${percentage < 40 ? 'bg-red-500' : percentage < 80 ? 'bg-blue-500' : 'bg-emerald-500'}`}
+                                                    style={{ width: `${percentage}%` }}
+                                                />
+                                            </div>
+                                            <div className="flex justify-between text-[10px] font-bold text-slate-400">
+                                                <span>0</span>
+                                                <span>Average ({avgVal.toLocaleString()})</span>
+                                                <span>Top 10% ({top10Val.toLocaleString()})</span>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         </div>
-                        <h5 className="font-bold text-slate-800 mb-2">업계 권장 표준</h5>
-                        <p className="text-2xl font-black text-slate-900 italic">Advanced Standard</p>
-                        <p className="text-slate-500 text-sm mt-2 leading-relaxed">준비된 자산 가치가 물가 상승률(3% 가정)을 이길 수 있도록 설정된 가이드라인입니다.</p>
-                    </div>
-                    <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 flex flex-col items-center justify-center text-center">
-                        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 mb-4">
-                            <Activity className="w-8 h-8" />
+                    ) : (
+                        <div className="bg-white border-2 border-slate-900 rounded-[40px] p-10 shadow-xl">
+                            <h5 className="font-black text-slate-900 mb-8 flex justify-between items-center">
+                                <span>재무 건전성 벤치마크 대조 (%)</span>
+                                <span className="bg-slate-900 text-white text-[10px] px-3 py-1 rounded-full uppercase">Top 10% vs You</span>
+                            </h5>
+                            <div className="grid grid-cols-2 gap-12">
+                                <div className="space-y-6">
+                                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">저축 및 투자율</p>
+                                    <div className="flex items-end gap-4">
+                                        <div className="flex-1 space-y-2">
+                                            <div className="h-32 bg-slate-50 rounded-2xl flex items-end overflow-hidden p-1 gap-1">
+                                                <div className="flex-1 bg-slate-200 rounded-lg h-[40%]" title="Avg" />
+                                                <div className="flex-1 bg-blue-600 rounded-lg h-[90%]" title="Top 10" />
+                                                <div className="flex-1 bg-emerald-500 rounded-lg" style={{ height: `${Math.min((((financeState.currentIncome - financeState.currentExpenses) / (financeState.currentIncome || 1)) * 100) / 50) * 100}%` }} title="You" />
+                                            </div>
+                                            <p className="text-[10px] font-black text-center text-slate-400">Savings Rate</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-2xl font-black text-slate-900">{(((financeState.currentIncome - financeState.currentExpenses) / (financeState.currentIncome || 1)) * 100).toFixed(0)}%</p>
+                                            <p className="text-[10px] font-bold text-emerald-600">Your Efficiency</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="space-y-6">
+                                    <p className="text-xs font-black text-slate-400 uppercase tracking-widest">공격적 자산 비중</p>
+                                    <div className="flex items-end gap-4">
+                                        <div className="flex-1 space-y-2">
+                                            <div className="h-32 bg-slate-50 rounded-2xl flex items-end overflow-hidden p-1 gap-1">
+                                                <div className="flex-1 bg-slate-200 rounded-lg h-[50%]" title="Avg" />
+                                                <div className="flex-1 bg-blue-600 rounded-lg h-[85%]" title="Top 10" />
+                                                <div className="flex-1 bg-amber-500 rounded-lg" style={{ height: `${Math.min(((totalAssets > 0 ? ((financeState.assets.stock + trackedStockValue + financeState.assets.crypto + trackedCryptoValue) / totalAssets) : 0) * 100) / 80) * 100}%` }} title="You" />
+                                            </div>
+                                            <p className="text-[10px] font-black text-center text-slate-400">Equity Ratio</p>
+                                        </div>
+                                        <div className="text-right">
+                                            <p className="text-2xl font-black text-slate-900">{(totalAssets > 0 ? ((financeState.assets.stock + trackedStockValue + financeState.assets.crypto + trackedCryptoValue) / totalAssets) * 100 : 0).toFixed(0)}%</p>
+                                            <p className="text-[10px] font-bold text-amber-600">Your Aggression</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <h5 className="font-bold text-slate-800 mb-2">고객 준비 현황</h5>
-                        <p className="text-2xl font-black text-emerald-600 italic">Optimized Status</p>
-                        <p className="text-slate-500 text-sm mt-2 leading-relaxed">현 자산 구성을 5년 뒤의 실질 구매력으로 환산했을 때의 방어력입니다.</p>
-                    </div>
+                    )}
                 </div>
 
-                <div className="bg-blue-50 p-8 rounded-3xl border border-blue-100 mb-12 flex-1">
-                    <h4 className="font-bold text-blue-800 mb-4 flex items-center gap-2 uppercase tracking-widest text-sm">Expert Commentary</h4>
+                <div className="bg-blue-50 p-8 rounded-3xl border border-blue-100 flex-1">
+                    <h4 className="font-black text-blue-800 mb-4 flex items-center gap-2 uppercase tracking-widest text-xs">Expert Analysis Context</h4>
                     <p className="text-blue-700 leading-relaxed font-bold">
-                        "통계에 따르면 {mode === 'insurance' ? '상위 20%의 자산가들은 보험 등 보장성 자산에 총 지출의 약 15%를 배분합니다.' : '부유층의 경우 자산의 40% 이상을 현금 흐름 창출이 가능한 자산에 배치합니다.'} 고객님의 현재 배분율은
-                        {mode === 'insurance' ? ' 권장 기준을 소폭 하회하고 있어,' : ' 적정 수준이나,'}
-                        {mode === 'insurance' ? " 전략적으로 '소득 상실 보전' 보다는 '직접 의료비' 에 치중되어 있습니다. 이를 균형있게 재조정하는 것이 향후 10년의 재무 안정성을 결정짓게 될 것입니다." : " 유동성이 다소 과하여 수익률 방어가 우려됩니다. 인플레이션을 고려한 적극적 운용이 필요합니다."}
+                        {expertCommentary.marketOutlook} 고객님의 수치는 {(mode === 'insurance' ? gapAnalysis.score : 80) > 70 ? '상위권에 근접하여 매우 고무적입니다.' : '벤치마크 대비 보완이 필요하며, 특히 자산의 질적 개선이 우선되어야 합니다.'}
                     </p>
                 </div>
                 <div className="mt-auto p-6 border-t border-slate-100 text-center">
@@ -403,70 +503,111 @@ export default function ReportPDF({
             </div>
 
             {/* PAGE 7: RETIREMENT & LONGEVITY STRATEGY (ONLY FOR FINANCE) */}
-            {mode === 'finance' && (
-                <div className="pdf-page bg-white p-12 mb-4 min-h-[1100px] flex flex-col shadow-sm">
-                    <div className="flex items-center gap-3 mb-12">
-                        <div className="bg-blue-600 text-white p-2 rounded-lg"><TrendingUp className="w-6 h-6" /></div>
-                        <h3 className="text-3xl font-black text-slate-900 tracking-tight">06. 은퇴 전략 및 장수 리스크 관리</h3>
-                    </div>
-
-                    <div className="bg-slate-50 p-10 rounded-3xl border border-slate-100 mb-12 flex-1">
-                        <h4 className="font-extrabold text-slate-800 mb-8 border-b-4 border-slate-900 pb-4 inline-block">90세 자산 라이프사이클 시뮬레이션</h4>
-                        <div className="h-[450px]">
-                            <RetirementChart financeState={financeState} />
+            {
+                mode === 'finance' && (
+                    <div className="pdf-page bg-white p-12 mb-4 min-h-[1100px] flex flex-col shadow-sm">
+                        <div className="flex items-center gap-3 mb-12">
+                            <div className="bg-blue-600 text-white p-2 rounded-lg"><TrendingUp className="w-6 h-6" /></div>
+                            <h3 className="text-3xl font-black text-slate-900 tracking-tight">06. 은퇴 전략 및 장수 리스크 관리</h3>
                         </div>
-                        <div className="mt-12 grid grid-cols-2 gap-8">
-                            <div className="p-8 bg-blue-600 rounded-3xl text-white">
-                                <h5 className="font-bold mb-2 text-blue-100 uppercase tracking-widest text-xs">Estimated Retirement Start</h5>
-                                <p className="text-4xl font-black tracking-tight">{financeState.retirementAge}세</p>
+
+                        <div className="bg-slate-50 p-10 rounded-3xl border border-slate-100 mb-12 flex-1">
+                            <h4 className="font-extrabold text-slate-800 mb-8 border-b-4 border-slate-900 pb-4 inline-block">90세 자산 라이프사이클 시뮬레이션</h4>
+                            <div className="h-[450px]">
+                                <RetirementChart financeState={financeState} />
                             </div>
-                            <div className="p-8 bg-slate-900 rounded-3xl text-white text-right">
-                                <h5 className="font-bold mb-2 text-slate-400 uppercase tracking-widest text-xs">Target Monthly Cashflow</h5>
-                                <p className="text-4xl font-black tracking-tight">{financeState.targetMonthlyIncome.toLocaleString()}만원</p>
+                            <div className="mt-12 grid grid-cols-2 gap-8">
+                                <div className="p-8 bg-blue-600 rounded-3xl text-white">
+                                    <h5 className="font-bold mb-2 text-blue-100 uppercase tracking-widest text-xs">Estimated Retirement Start</h5>
+                                    <p className="text-4xl font-black tracking-tight">{financeState.retirementAge}세</p>
+                                </div>
+                                <div className="p-8 bg-slate-900 rounded-3xl text-white text-right">
+                                    <h5 className="font-bold mb-2 text-slate-400 uppercase tracking-widest text-xs">Target Monthly Cashflow</h5>
+                                    <p className="text-4xl font-black tracking-tight">{financeState.targetMonthlyIncome.toLocaleString()}만원</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div className="mt-8 p-10 bg-slate-50 rounded-3xl border border-dashed border-slate-300">
-                        <p className="text-slate-500 tracking-tight leading-relaxed italic">
-                            * 본 시뮬레이션은 {financeState.name || '고객'}님의 현재 자산 증가 속도와 **예상 국민연금 수량액(월 {financeState.nationalPension.toLocaleString()}만원)**을 기반으로 합니다. 은퇴 후 물가 상승률을 반영한 **실질 구매 가치**를 보존하기 위해선 월 수익률이 최소 인플레이션을 초과해야 합니다. 현재 구조로는 노후 생활비의 {((financeState.currentIncome - financeState.currentExpenses) / financeState.currentIncome) * 100 < 30 && financeState.nationalPension < 100 ? '약 60%만이' : '안정적인 100%가'} 충당될 것으로 예측됩니다.
-                        </p>
+                        <div className="mt-8 p-10 bg-slate-50 rounded-3xl border border-dashed border-slate-300">
+                            <p className="text-slate-500 tracking-tight leading-relaxed italic">
+                                * 본 시뮬레이션은 {financeState.name || '고객'}님의 현재 자산 증가 속도와 **예상 국민연금 수량액(월 {financeState.nationalPension.toLocaleString()}만원)**을 기반으로 합니다. 은퇴 후 물가 상승률을 반영한 **실질 구매 가치**를 보존하기 위해선 월 수익률이 최소 인플레이션을 초과해야 합니다. 현재 구조로는 노후 생활비의 {((financeState.currentIncome - financeState.currentExpenses) / financeState.currentIncome) * 100 < 30 && financeState.nationalPension < 100 ? '약 60%만이' : '안정적인 100%가'} 충당될 것으로 예측됩니다.
+                            </p>
+                        </div>
+                        <div className="mt-auto p-6 border-t border-slate-100 text-center">
+                            <p className="text-slate-400 text-xs">AI Financial Intelligence Engine v2.0 - Page 07</p>
+                        </div>
                     </div>
-                    <div className="mt-auto p-6 border-t border-slate-100 text-center">
-                        <p className="text-slate-400 text-xs">AI Financial Intelligence Engine v2.0 - Page 07</p>
-                    </div>
-                </div>
-            )}
+                )
+            }
 
-            {/* PAGE 8: STRATEGIC ACTION PLAN */}
+            {/* PAGE 8: STRATEGIC ACTION PLAN (ROADMAP) */}
             <div className="pdf-page bg-white p-12 mb-4 min-h-[1100px] flex flex-col shadow-sm">
                 <div className="flex items-center gap-3 mb-12">
-                    <div className="bg-blue-600 text-white p-2 rounded-lg"><Map className="w-6 h-6" /></div>
-                    <h3 className="text-3xl font-black text-slate-900 tracking-tight">{mode === 'insurance' ? '06' : '07'}. 핵심 전략 실행 단계(Strategic Action)</h3>
+                    <div className="bg-slate-900 text-white p-2 rounded-lg"><Map className="w-6 h-6" /></div>
+                    <h3 className="text-3xl font-black text-slate-900 tracking-tight">{mode === 'insurance' ? '06' : '07'}. 핵심 실행 로드맵 (Execution Roadmap)</h3>
                 </div>
 
-                <div className="space-y-8 mb-12">
-                    {actionPlans.map((plan, i) => (
-                        <div key={i} className="bg-slate-50 p-10 rounded-[40px] border border-slate-200 flex gap-10 items-center hover:bg-white transition-all duration-300 hover:shadow-2xl group">
-                            <div className="text-6xl bg-white w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg border border-slate-100 group-hover:scale-110 transition-transform">
-                                {plan.icon}
-                            </div>
-                            <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-3">
-                                    <span className="bg-blue-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Priority {i + 1}</span>
-                                    <h4 className="text-2xl font-black text-slate-900">{plan.title}</h4>
+                <div className="flex-1 space-y-10">
+                    {/* Short Term */}
+                    <div className="relative pl-12 border-l-4 border-blue-600">
+                        <div className="absolute -left-3 top-0 w-5 h-5 bg-blue-600 rounded-full border-4 border-white shadow-sm" />
+                        <h4 className="text-xl font-black text-slate-900 mb-6 flex items-center gap-3">
+                            <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest">{actionPlans.shortTerm.title}</span>
+                        </h4>
+                        <div className="grid grid-cols-1 gap-4">
+                            {actionPlans.shortTerm.items.map((item: any, i: number) => (
+                                <div key={i} className="bg-slate-50 p-6 rounded-3xl border border-slate-100 flex gap-6 items-center">
+                                    <span className="text-4xl">{item.icon}</span>
+                                    <div>
+                                        <p className="font-black text-slate-900 mb-1">{item.title}</p>
+                                        <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
+                                    </div>
                                 </div>
-                                <p className="text-slate-600 leading-relaxed font-medium">{plan.desc}</p>
-                            </div>
+                            ))}
                         </div>
-                    ))}
+                    </div>
+
+                    {/* Mid Term */}
+                    <div className="relative pl-12 border-l-4 border-slate-200">
+                        <div className="absolute -left-3 top-0 w-5 h-5 bg-slate-200 rounded-full border-4 border-white shadow-sm" />
+                        <h4 className="text-xl font-black text-slate-700 mb-6 flex items-center gap-3">
+                            <span className="bg-slate-100 text-slate-500 px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest">{actionPlans.midTerm.title}</span>
+                        </h4>
+                        <div className="grid grid-cols-1 gap-4 opacity-80">
+                            {actionPlans.midTerm.items.map((item: any, i: number) => (
+                                <div key={i} className="bg-slate-50 p-6 rounded-3xl border border-dotted border-slate-300 flex gap-6 items-center text-slate-400">
+                                    <span className="text-4xl grayscale">{item.icon}</span>
+                                    <div>
+                                        <p className="font-black text-slate-600 mb-1">{item.title}</p>
+                                        <p className="text-sm leading-relaxed">{item.desc}</p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Long Term */}
+                    <div className="relative pl-12 border-l-4 border-slate-50">
+                        <div className="absolute -left-3 top-0 w-5 h-5 bg-slate-50 rounded-full border-4 border-white shadow-sm" />
+                        <h4 className="text-xl font-black text-slate-400 mb-6 flex items-center gap-3">
+                            <span className="bg-slate-50 text-slate-300 px-3 py-1 rounded-lg text-xs font-black uppercase tracking-widest">{actionPlans.longTerm.title}</span>
+                        </h4>
+                        <div className="grid grid-cols-1 gap-4 opacity-50">
+                            {actionPlans.longTerm.items.map((item: any, i: number) => (
+                                <div key={i} className="bg-slate-50 p-6 rounded-3xl border border-dotted border-slate-200 flex gap-6 items-center italic">
+                                    <span className="text-4xl grayscale opacity-30">{item.icon}</span>
+                                    <p className="text-slate-400 font-bold">{item.title}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
 
-                <div className="bg-emerald-50 p-10 rounded-[40px] border border-emerald-100 shadow-lg shadow-emerald-500/10">
-                    <h4 className="font-black text-emerald-800 text-lg mb-4 flex items-center gap-3 underline decoration-emerald-200 decoration-4 underline-offset-8">
-                        <ShieldCheck className="w-8 h-8" /> {lifeAdvice.title}
+                <div className="bg-blue-600 p-10 rounded-[40px] text-white shadow-xl shadow-blue-500/20">
+                    <h4 className="font-black text-blue-100 text-lg mb-4 flex items-center gap-3 underline decoration-blue-400 decoration-4 underline-offset-8 uppercase tracking-widest text-xs">
+                        <Activity className="w-5 h-5" /> AI 핵심 통찰
                     </h4>
-                    <p className="text-emerald-700 leading-relaxed text-xl font-medium">{lifeAdvice.advice}</p>
+                    <p className="text-white leading-relaxed text-lg font-bold">"{lifeAdvice.advice}"</p>
                 </div>
                 <div className="mt-auto p-6 border-t border-slate-100 text-center">
                     <p className="text-slate-400 text-xs">AI Financial Intelligence Engine v2.0 - Page {mode === 'insurance' ? '07' : '08'}</p>
@@ -564,7 +705,7 @@ export default function ReportPDF({
                     <p>Copyright © 2026. All rights reserved.</p>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
