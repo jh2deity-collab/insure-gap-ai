@@ -27,7 +27,12 @@ export default function ReportPDF({
     const actionPlans = getActionPlan(userState, financeState, gapAnalysis, mode);
     const expertCommentary = getExpertCommentary(userState, financeState, gapAnalysis, mode);
     const stressTests = getStressTestResults(financeState, mode);
-    const totalAssets = Object.values(financeState.assets).reduce((a, b) => a + b, 0);
+    const manualAssetsValue = Object.entries(financeState.assets)
+        .filter(([key, value]) => typeof value === 'number')
+        .reduce((sum, [_, value]) => sum + (value as number), 0);
+    const trackedStockValue = financeState.assets.trackedStocks?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const trackedCryptoValue = financeState.assets.trackedCrypto?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const totalAssets = manualAssetsValue + trackedStockValue + trackedCryptoValue;
 
     return (
         <div className="bg-slate-100 p-0 w-[800px] font-sans">
@@ -212,20 +217,23 @@ export default function ReportPDF({
                                     </tr>
                                 ))
                             ) : (
-                                (Object.entries(financeState.assets) as [string, number][]).map(([key, val], i) => (
-                                    <tr key={key} className="hover:bg-slate-50 transition-colors">
-                                        <td className="py-4 font-bold text-slate-700">
-                                            {key === 'cash' ? '현금/예금' :
-                                                key === 'stock' ? '주식/펀드' :
-                                                    key === 'realEstate' ? '부동산' :
-                                                        key === 'pension' ? '개인/퇴직연금' :
-                                                            key === 'insurance' ? '보험 자산' : '가상화폐/기타'}
-                                        </td>
-                                        <td className="py-4 text-slate-600">{val.toLocaleString()}만원</td>
-                                        <td className="py-4 text-slate-400">-</td>
-                                        <td className="py-4 font-bold text-slate-500">{((val / (totalAssets || 1)) * 100).toFixed(1)}%</td>
-                                    </tr>
-                                ))
+                                (Object.entries(financeState.assets).filter(([k, v]) => typeof v === 'number') as [string, number][]).map(([key, val], i) => {
+                                    const displayVal = key === 'stock' ? val + trackedStockValue : key === 'crypto' ? val + trackedCryptoValue : val;
+                                    return (
+                                        <tr key={key} className="hover:bg-slate-50 transition-colors">
+                                            <td className="py-4 font-bold text-slate-700">
+                                                {key === 'cash' ? '현금/예금' :
+                                                    key === 'stock' ? '주식/펀드' :
+                                                        key === 'realEstate' ? '부동산' :
+                                                            key === 'pension' ? '개인/퇴직연금' :
+                                                                key === 'insurance' ? '보험 자산' : '가상화폐/기타'}
+                                            </td>
+                                            <td className="py-4 text-slate-600">{displayVal.toLocaleString()}만원</td>
+                                            <td className="py-4 text-slate-400">-</td>
+                                            <td className="py-4 font-bold text-slate-500">{((displayVal / (totalAssets || 1)) * 100).toFixed(1)}%</td>
+                                        </tr>
+                                    );
+                                })
                             )}
                         </tbody>
                     </table>

@@ -10,7 +10,12 @@ interface RetirementChartProps {
 export default function RetirementChart({ financeState }: RetirementChartProps) {
     // Simple Projection Logic
     // Current Net Worth
-    const currentNetWorth = Object.values(financeState.assets).reduce((a, b) => a + b, 0);
+    const manualAssetsValue = Object.entries(financeState.assets)
+        .filter(([key, value]) => typeof value === 'number')
+        .reduce((sum, [_, value]) => sum + (value as number), 0);
+    const trackedStockValue = financeState.assets.trackedStocks?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const trackedCryptoValue = financeState.assets.trackedCrypto?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const currentNetWorth = manualAssetsValue + trackedStockValue + trackedCryptoValue;
     const annualSavings = (financeState.currentIncome - financeState.currentExpenses) * 12;
     const investmentRate = 0.05; // 5% expected return
     const inflationRate = 0.03;  // 3% expected inflation
