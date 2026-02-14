@@ -115,10 +115,11 @@ export default function FinanceAIAnalysis({ financeState }: FinanceAIAnalysisPro
 
             {/* Action Plan Section */}
             {(() => {
-                const std = getStandardCoverage(age, financeState.gender || 'male');
-                const gapRes = calculateGapScore(financeState.assets, std); // Using assets as proxy for scores for now or use global state
-                // Since this component only has financeState, we might need more context or use a simplified version
-                const actions = getActionPlan({ age }, financeState, gapRes);
+                // Mock gap analysis result as it's not used in finance mode action plans
+                const mockGapRes = { score: 100, gapCount: 0 };
+                // Creating a partial user state to satisfy types (only age is accessed in finance mode)
+                const pseudoUser = { age, name: '', gender: (financeState.gender || 'male') as 'male' | 'female', coverages: { cancer: 0, brain: 0, heart: 0, medical: 0, death: 0 } };
+                const actions = getActionPlan(pseudoUser, financeState, mockGapRes, 'finance');
                 return (
                     <div className="mt-8 pt-8 border-t border-slate-700">
                         <h4 className="text-white font-bold mb-6 flex items-center gap-2">
