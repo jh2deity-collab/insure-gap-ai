@@ -68,88 +68,95 @@ export default function MarketAssetInput({ type, onAssetsChange, initialAssets =
     const totalValue = assets.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0)
 
     return (
-        <div className="bg-slate-900/50 rounded-2xl border border-slate-700 p-4 mt-2">
-            <div className="flex items-center justify-between mb-4">
-                <h4 className="text-slate-300 text-xs font-bold flex items-center gap-2">
-                    {type === 'stock' ? <TrendingUp className="w-3 h-3 text-blue-400" /> : <Wallet className="w-3 h-3 text-emerald-400" />}
-                    실시간 {type === 'stock' ? '주식' : '코인'} 관리
+        <div className="bg-slate-900/60 rounded-2xl border border-slate-700/80 p-6 mt-4 shadow-xl">
+            <div className="flex items-center justify-between mb-5">
+                <h4 className="text-white text-sm font-black flex items-center gap-2">
+                    {type === 'stock' ? <TrendingUp className="w-4 h-4 text-blue-400" /> : <Wallet className="w-4 h-4 text-emerald-400" />}
+                    실시간 {type === 'stock' ? '주식' : '코인'} 포트폴리오
                 </h4>
-                <div className="text-slate-400 text-[10px] font-mono">
+                <div className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700 text-slate-400 text-[11px] font-mono">
                     Total: <span className="text-white font-bold">{(totalValue / 1).toLocaleString()}</span> 만원
                 </div>
             </div>
 
-            {/* Input Row */}
-            <div className="flex gap-2 mb-4">
-                <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input
-                        type="text"
-                        placeholder={type === 'stock' ? "티커 (AAPL, 삼성전자...)" : "코인 (BTC, ETH...)"}
-                        value={newSymbol}
-                        onChange={(e) => setNewSymbol(e.target.value)}
-                        className="w-full bg-slate-800 border border-slate-700 rounded-lg pl-9 pr-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
-                    />
+            {/* Input Row - Expanded */}
+            <div className="flex flex-col gap-3 mb-6">
+                <div className="flex gap-2">
+                    <div className="relative flex-[2]">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+                        <input
+                            type="text"
+                            placeholder={type === 'stock' ? "티커 검색 (AAPL, 005930...)" : "코인 검색 (BTC, ETH...)"}
+                            value={newSymbol}
+                            onChange={(e) => setNewSymbol(e.target.value)}
+                            className="w-full bg-slate-800 border-2 border-slate-700 rounded-xl pl-12 pr-4 py-3 text-base text-white focus:outline-none focus:border-blue-500 transition-all placeholder:text-slate-600"
+                        />
+                    </div>
+                    <div className="relative flex-1">
+                        <input
+                            type="number"
+                            placeholder="수량"
+                            value={newQty || ""}
+                            onChange={(e) => setNewQty(parseFloat(e.target.value))}
+                            className="w-full bg-slate-800 border-2 border-slate-700 rounded-xl px-4 py-3 text-base text-white focus:outline-none focus:border-blue-500 transition-all text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                    </div>
                 </div>
-                <input
-                    type="number"
-                    placeholder="수량"
-                    value={newQty || ""}
-                    onChange={(e) => setNewQty(parseFloat(e.target.value))}
-                    className="w-20 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
-                />
                 <button
                     onClick={addAsset}
                     disabled={loading || !newSymbol || newQty <= 0}
-                    className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white p-2 rounded-lg transition-colors"
+                    className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-600/20 active:scale-[0.98]"
                 >
-                    <Plus className="w-5 h-5" />
+                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Plus className="w-5 h-5" />}
+                    자산 추가하기
                 </button>
             </div>
 
-            {/* List */}
-            <div className="space-y-2 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
+            {/* List - Taller & More Readable */}
+            <div className="space-y-3 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                 <AnimatePresence>
                     {assets.map((asset) => (
                         <motion.div
                             key={asset.id}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: 10 }}
-                            className="flex items-center justify-between bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 group"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            className="flex items-center justify-between bg-slate-800/40 p-4 rounded-2xl border border-slate-700/30 group hover:border-slate-500/50 transition-all"
                         >
-                            <div className="flex items-center gap-3">
-                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-[10px] ${type === 'stock' ? 'bg-blue-500/10 text-blue-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
-                                    {asset.symbol.substring(0, 3)}
+                            <div className="flex items-center gap-4">
+                                <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs ${type === 'stock' ? 'bg-blue-500/20 text-blue-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                                    {asset.symbol.substring(0, 4)}
                                 </div>
                                 <div>
-                                    <p className="text-white text-[11px] font-bold">{asset.name}</p>
-                                    <p className="text-slate-500 text-[9px]">{asset.quantity.toLocaleString()}주/개 × {asset.currentPrice.toLocaleString()}만원</p>
+                                    <p className="text-white text-sm font-bold">{asset.name}</p>
+                                    <p className="text-slate-500 text-[11px] font-medium">{asset.quantity.toLocaleString()}주/개 × {asset.currentPrice.toLocaleString()}만원</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-5">
                                 <div className="text-right">
-                                    <p className="text-blue-400 text-[11px] font-mono font-bold">+{(asset.quantity * asset.currentPrice).toLocaleString()}</p>
-                                    <p className="text-slate-600 text-[9px] flex items-center justify-end gap-1">
-                                        Live <ArrowUpRight className="w-2 h-2" />
+                                    <p className="text-blue-400 text-sm font-black font-mono">+{(asset.quantity * asset.currentPrice).toLocaleString()}</p>
+                                    <p className="text-slate-600 text-[10px] flex items-center justify-end gap-1 font-bold">
+                                        LIVE <ArrowUpRight className="w-3 h-3" />
                                     </p>
                                 </div>
                                 <button
                                     onClick={() => removeAsset(asset.id)}
-                                    className="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-red-400 p-1 transition-all"
+                                    className="text-slate-600 hover:text-red-400 p-2 hover:bg-red-400/10 rounded-lg transition-all"
                                 >
-                                    <Trash2 className="w-4 h-4" />
+                                    <Trash2 className="w-5 h-5" />
                                 </button>
                             </div>
                         </motion.div>
                     ))}
                 </AnimatePresence>
                 {assets.length === 0 && (
-                    <div className="text-center py-6 text-slate-600 text-[11px] italic">
-                        연동된 자산이 없습니다. 티커와 수량을 입력하세요.
+                    <div className="text-center py-10 text-slate-600 text-sm italic border-2 border-dashed border-slate-800 rounded-3xl">
+                        등록된 자산이 없습니다. 위에서 추가해 보세요!
                     </div>
                 )}
             </div>
         </div>
     )
 }
+
+import { Loader2 } from "lucide-react"
