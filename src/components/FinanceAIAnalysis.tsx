@@ -1,7 +1,8 @@
 "use client"
 
 import { FinanceState } from "@/types"
-import { Sparkles, AlertTriangle, CheckCircle, Target } from "lucide-react"
+import { TrendingUp, Sparkles, AlertTriangle, CheckCircle, Target } from "lucide-react"
+import { getActionPlan, calculateGapScore, getStandardCoverage } from "@/lib/data"
 
 interface FinanceAIAnalysisProps {
     financeState: FinanceState;
@@ -111,6 +112,30 @@ export default function FinanceAIAnalysis({ financeState }: FinanceAIAnalysisPro
                     <p className="text-slate-300 text-sm leading-relaxed">{savingsAdvice}</p>
                 </div>
             </div>
+
+            {/* Action Plan Section */}
+            {(() => {
+                const std = getStandardCoverage(age, financeState.gender || 'male');
+                const gapRes = calculateGapScore(financeState.assets, std); // Using assets as proxy for scores for now or use global state
+                // Since this component only has financeState, we might need more context or use a simplified version
+                const actions = getActionPlan({ age }, financeState, gapRes);
+                return (
+                    <div className="mt-8 pt-8 border-t border-slate-700">
+                        <h4 className="text-white font-bold mb-6 flex items-center gap-2">
+                            <TrendingUp className="w-5 h-5 text-emerald-400" /> 핵심 액션 플랜 (Action Plan)
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {actions.map((action, i) => (
+                                <div key={i} className="bg-slate-900/50 p-4 rounded-xl border border-slate-700 hover:border-emerald-500/30 transition-colors">
+                                    <div className="text-2xl mb-2">{action.icon}</div>
+                                    <h5 className="font-bold text-emerald-400 text-xs mb-2">{action.title}</h5>
+                                    <p className="text-slate-400 text-[11px] leading-relaxed">{action.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                );
+            })()}
 
             <div className="mt-6 pt-6 border-t border-slate-700 text-center">
                 <p className="text-slate-400 text-sm">

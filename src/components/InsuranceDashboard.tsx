@@ -1,8 +1,9 @@
 "use client"
 
 import Image from "next/image"
-import { Shield, Download, RotateCcw, BarChart2 } from "lucide-react"
+import { Shield, Download, RotateCcw, BarChart2, ShieldCheck, TrendingUp } from "lucide-react"
 import { UserState, StandardData, CoverageData, AnalysisResult } from "@/types"
+import { getLifeStageAdvice, getActionPlan } from "@/lib/data"
 import InputSection from "@/components/InputSection"
 import RadarVis from "@/components/RadarVis"
 import ScoreCard from "@/components/ScoreCard"
@@ -13,69 +14,19 @@ interface InsuranceDashboardProps {
     userState: UserState;
     standardData: CoverageData;
     gapAnalysis: AnalysisResult;
-    onChange: (key: string, value: any) => void;
-    onReset: () => void;
-    onDownload: () => void;
-    onNavigateHome: () => void;
+    onChange: (key: string, value: string | number | { key: string; value: number }) => void;
 }
 
 export default function InsuranceDashboard({
     userState,
     standardData,
     gapAnalysis,
-    onChange,
-    onReset,
-    onDownload,
-    onNavigateHome
+    onChange
 }: InsuranceDashboardProps) {
     return (
         <div>
             <OnboardingGuide />
-            {/* Header */}
-            <header className="py-8 flex justify-between items-center border-b border-slate-800 mb-8">
-                <div className="flex items-center gap-4">
-                    <button
-                        onClick={onNavigateHome}
-                        className="p-2 -ml-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-all"
-                        data-html2canvas-ignore
-                    >
-                        <Image
-                            src="/assets/back-arrow.png"
-                            alt="Back"
-                            width={32}
-                            height={32}
-                            className="w-8 h-8 object-contain"
-                        />
-                    </button>
-                    <div
-                        className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
-                        onClick={onNavigateHome}
-                    >
-                        <div className="bg-blue-600 p-2 rounded-lg">
-                            <Shield className="w-6 h-6 text-white" />
-                        </div>
-                        <h1 className="text-xl font-bold tracking-tight">INSURE-GAP AI</h1>
-                    </div>
-                </div>
 
-                <div className="flex gap-3" data-html2canvas-ignore>
-                    <button
-                        onClick={onReset}
-                        className="group flex items-center gap-2 px-4 py-2.5 bg-slate-800/50 hover:bg-red-500/10 border border-slate-700 hover:border-red-500/50 rounded-xl text-slate-400 hover:text-red-400 transition-all duration-300"
-                        title="설정 초기화"
-                    >
-                        <RotateCcw className="w-4 h-4 group-hover:-rotate-180 transition-transform duration-500" />
-                        <span className="hidden sm:inline font-medium">초기화</span>
-                    </button>
-                    <button
-                        onClick={onDownload}
-                        className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl font-semibold shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 transform hover:-translate-y-0.5"
-                    >
-                        <Download className="w-4 h-4" />
-                        <span>리포트 저장</span>
-                    </button>
-                </div>
-            </header>
 
             {/* Hero Score Section */}
             <section className="py-10">
@@ -113,6 +64,29 @@ export default function InsuranceDashboard({
                         </div>
                     </div>
 
+                    {/* Life-stage Advice */}
+                    {(() => {
+                        const lifeAdvice = getLifeStageAdvice(userState.age);
+                        return (
+                            <div className="mt-6 bg-emerald-600/10 border border-emerald-500/30 rounded-xl p-5 animate-in fade-in slide-in-from-left-4 duration-700">
+                                <div className="flex items-center gap-2 mb-3">
+                                    <ShieldCheck className="w-5 h-5 text-emerald-500" />
+                                    <h4 className="font-bold text-emerald-400">{lifeAdvice.title}</h4>
+                                </div>
+                                <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                                    {lifeAdvice.advice}
+                                </p>
+                                <div className="flex flex-wrap gap-2">
+                                    {lifeAdvice.priority.map((item, i) => (
+                                        <span key={i} className="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 rounded-md text-xs font-medium border border-emerald-500/20">
+                                            #{item}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })()}
+
                     {/* AI Closing Script */}
                     <div className="mt-6">
                         <AIClosing
@@ -123,6 +97,31 @@ export default function InsuranceDashboard({
                             )}
                         />
                     </div>
+
+                    {/* Action Plan */}
+                    {(() => {
+                        // @ts-ignore - Need pseudo financeState for insurance only view
+                        const pseudoFinance = { currentIncome: 500, currentExpenses: 250 };
+                        const actions = getActionPlan(userState, pseudoFinance, gapAnalysis);
+                        return (
+                            <div className="mt-6 bg-slate-900/50 border border-slate-700 rounded-xl p-6">
+                                <h4 className="text-white font-bold mb-4 flex items-center gap-2">
+                                    <TrendingUp className="w-5 h-5 text-emerald-400" /> 핵심 액션 플랜
+                                </h4>
+                                <div className="space-y-3">
+                                    {actions.map((action, i) => (
+                                        <div key={i} className="flex gap-3 bg-slate-800/50 p-3 rounded-lg border border-slate-700">
+                                            <span className="text-xl">{action.icon}</span>
+                                            <div>
+                                                <p className="text-emerald-400 text-sm font-bold">{action.title}</p>
+                                                <p className="text-slate-400 text-xs mt-1 leading-relaxed">{action.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        );
+                    })()}
                 </div>
             </div>
 

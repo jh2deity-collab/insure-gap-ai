@@ -12,7 +12,7 @@ import { TrendingUp, PieChart as PieIcon, Activity } from "lucide-react"
 
 interface FinanceDashboardProps {
     financeState: FinanceState;
-    onStateChange: (key: string, value: any) => void;
+    onStateChange: (key: string, value: string | number | { key: string; value: number }) => void;
 }
 
 export default function FinanceDashboard({ financeState, onStateChange }: FinanceDashboardProps) {
@@ -67,7 +67,7 @@ export default function FinanceDashboard({ financeState, onStateChange }: Financ
                     </h3>
                     <RetirementChart financeState={financeState} />
                     <p className="text-center text-slate-500 text-sm mt-4">
-                        * 연 수익률 5%, 물가상승률 미반영 단순 예시입니다.
+                        * 연 수익률 5%, 물가상승률 3%를 반영한 <strong>현재 가치 기준</strong> 시뮬레이션입니다.
                     </p>
                 </div>
 

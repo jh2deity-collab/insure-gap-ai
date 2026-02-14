@@ -8,7 +8,7 @@ import { motion } from "framer-motion"
 
 interface InputSectionProps {
     userState: UserState;
-    onChange: (key: string, value: any) => void;
+    onChange: (key: string, value: string | number | { key: string; value: number }) => void;
 }
 
 export default function InputSection({ userState, onChange }: InputSectionProps) {
@@ -22,6 +22,17 @@ export default function InputSection({ userState, onChange }: InputSectionProps)
 
     return (
         <div className="space-y-6 bg-slate-800/50 p-6 rounded-xl border border-slate-700">
+            <div className="mb-6">
+                <Label className="text-slate-400 mb-2 block">성함 (Name)</Label>
+                <input
+                    type="text"
+                    placeholder="이름을 입력하세요"
+                    value={userState.name || ""}
+                    onChange={(e) => onChange('name', e.target.value)}
+                    className="w-full bg-slate-900 border border-slate-700 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                />
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <div>
                     <Label className="text-slate-400 mb-2 block">나이 (Age)</Label>
@@ -56,10 +67,15 @@ export default function InputSection({ userState, onChange }: InputSectionProps)
                     <div key={item.key}>
                         <div className="flex justify-between mb-2">
                             <Label className="text-slate-300">{item.label}</Label>
-                            <span className="text-blue-400 font-mono font-bold">
-                                {userState.coverages[item.key as keyof typeof userState.coverages].toLocaleString()}
+                            <div className="flex items-center bg-slate-900 border border-slate-700 rounded-md px-2 py-0.5 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
+                                <input
+                                    type="number"
+                                    value={userState.coverages[item.key as keyof typeof userState.coverages]}
+                                    onChange={(e) => onChange('coverage', { key: item.key, value: Math.max(0, parseInt(e.target.value) || 0) })}
+                                    className="w-16 bg-transparent text-blue-400 font-mono font-bold text-right outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                />
                                 <span className="text-slate-500 text-xs ml-1">만원</span>
-                            </span>
+                            </div>
                         </div>
                         <input
                             type="range"

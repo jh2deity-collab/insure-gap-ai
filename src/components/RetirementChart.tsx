@@ -12,26 +12,30 @@ export default function RetirementChart({ financeState }: RetirementChartProps) 
     // Current Net Worth
     const currentNetWorth = Object.values(financeState.assets).reduce((a, b) => a + b, 0);
     const annualSavings = (financeState.currentIncome - financeState.currentExpenses) * 12;
-    const investmentRate = 0.05; // Assumed 5% annual return
+    const investmentRate = 0.05; // 5% expected return
+    const inflationRate = 0.03;  // 3% expected inflation
+    const realRate = (1 + investmentRate) / (1 + inflationRate) - 1;
 
     const data = [];
     let netWorth = currentNetWorth;
     const endAge = 90;
 
     for (let age = financeState.age; age <= endAge; age++) {
-        // Stop saving after retirement
         const isRetired = age >= financeState.retirementAge;
-        const yearlyFlow = isRetired ? -(financeState.currentExpenses * 12) : annualSavings;
+        // 은퇴 후에는 수입이 없고 지출만 발생하지만, 국민연금 수령액이 현금 흐름으로 추가됨
+        const yearlyFlow = isRetired
+            ? -(financeState.currentExpenses * 12) + (financeState.nationalPension * 12)
+            : annualSavings;
 
-        // Compound Interest
-        netWorth = netWorth * (1 + investmentRate) + yearlyFlow;
+        // Use real rate of return to show purchasing power in today's terms
+        netWorth = netWorth * (1 + realRate) + yearlyFlow;
 
         if (age % 5 === 0 || age === financeState.age || age === financeState.retirementAge) {
             data.push({
                 age: `${age}세`,
                 rawAge: age,
                 netWorth: Math.round(netWorth),
-                goal: 0 // Can add goal logic later
+                goal: 0
             });
         }
     }
