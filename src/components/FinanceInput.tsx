@@ -9,6 +9,8 @@ interface FinanceInputProps {
     onChange: (key: string, value: string | number | { key: string; value: number }) => void;
 }
 
+import MarketAssetInput from "./MarketAssetInput"
+
 export default function FinanceInput({ financeState, onChange }: FinanceInputProps) {
 
     const assetInputs = [
@@ -150,17 +152,17 @@ export default function FinanceInput({ financeState, onChange }: FinanceInputPro
                 <h3 className="text-amber-400 font-bold mb-4 flex items-center gap-2">
                     <TrendingUp className="w-4 h-4" /> 보유 자산 (순자산)
                 </h3>
-                <div className="space-y-4">
-                    {assetInputs.map(item => (
-                        <div key={item.key}>
+                <div className="space-y-6">
+                    {assetInputs.map((input) => (
+                        <div key={input.key} className="pt-2">
                             <div className="flex justify-between items-center mb-2">
-                                <Label className="text-slate-300">{item.label}</Label>
-                                <div className="flex items-center bg-slate-900 border border-slate-700 rounded-md px-2 py-0.5 focus-within:ring-1 focus-within:ring-amber-500 transition-all">
+                                <Label className="text-slate-400 text-xs font-bold">{input.label}</Label>
+                                <div className="flex items-center bg-slate-900 border border-slate-700 rounded-md px-2 py-0.5 focus-within:ring-1 focus-within:ring-blue-500 transition-all">
                                     <input
                                         type="number"
-                                        value={financeState.assets[item.key as keyof typeof financeState.assets]}
-                                        onChange={(e) => onChange('assets', { key: item.key, value: Math.max(0, parseInt(e.target.value) || 0) })}
-                                        className="w-20 bg-transparent text-amber-400 font-mono font-bold text-right outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                        value={financeState.assets[input.key as keyof FinanceState['assets']] as number}
+                                        onChange={(e) => onChange('assets', { key: input.key, value: Math.max(0, parseInt(e.target.value) || 0) })}
+                                        className="w-20 bg-transparent text-white font-mono font-bold text-right outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                                     />
                                     <span className="text-slate-500 text-xs ml-1">만원</span>
                                 </div>
@@ -168,12 +170,28 @@ export default function FinanceInput({ financeState, onChange }: FinanceInputPro
                             <input
                                 type="range"
                                 min="0"
-                                max={item.key === 'realEstate' ? 500000 : 100000}
-                                step={item.step}
-                                value={financeState.assets[item.key as keyof typeof financeState.assets]}
-                                onChange={(e) => onChange('assets', { key: item.key, value: parseInt(e.target.value) })}
-                                className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500 hover:accent-amber-400 transition-all"
+                                max={input.key === 'realEstate' ? 100000 : 10000}
+                                step={input.step}
+                                value={financeState.assets[input.key as keyof FinanceState['assets']] as number}
+                                onChange={(e) => onChange('assets', { key: input.key, value: parseInt(e.target.value) })}
+                                className="w-full h-1.5 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500 hover:accent-blue-400 transition-all"
                             />
+
+                            {/* Real-time Tracking Additions */}
+                            {input.key === 'stock' && (
+                                <MarketAssetInput
+                                    type="stock"
+                                    initialAssets={financeState.assets.trackedStocks}
+                                    onAssetsChange={(assets) => onChange('assets', { key: 'trackedStocks', value: assets as any })}
+                                />
+                            )}
+                            {input.key === 'crypto' && (
+                                <MarketAssetInput
+                                    type="crypto"
+                                    initialAssets={financeState.assets.trackedCrypto}
+                                    onAssetsChange={(assets) => onChange('assets', { key: 'trackedCrypto', value: assets as any })}
+                                />
+                            )}
                         </div>
                     ))}
                 </div>

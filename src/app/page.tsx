@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { Shield, Download, BarChart2, RotateCcw, ArrowLeft, TrendingUp } from "lucide-react"
 
-import { UserState, FinanceState, CoverageData, AnalysisResult } from "@/types"
+import { UserState, FinanceState, CoverageData, AnalysisResult, TrackedAsset } from "@/types"
 import { getStandardCoverage, calculateGapScore } from "@/lib/data"
 
 // Components
@@ -16,6 +16,8 @@ import ResetConfirmModal from "@/components/ResetConfirmModal"
 import dynamic from 'next/dynamic'
 
 const ReportPDF = dynamic(() => import("@/components/ReportPDF"), { ssr: false })
+
+import AIConsulting from "@/components/AIConsulting"
 
 export default function Home() {
   const [viewMode, setViewMode] = useState<'landing' | 'insurance' | 'finance'>('landing')
@@ -143,11 +145,14 @@ export default function Home() {
     handleResetClick('insurance')
   }
 
-  const handleFinanceStateChange = (key: string, value: string | number | { key: string; value: number }) => {
+  const handleFinanceStateChange = (key: string, value: string | number | { key: string; value: number | TrackedAsset[] }) => {
     if (key === 'assets' && typeof value === 'object' && 'key' in value) {
       setFinanceState(prev => ({
         ...prev,
-        assets: { ...prev.assets, [value.key]: value.value }
+        assets: {
+          ...prev.assets,
+          [value.key]: value.value
+        }
       }))
     } else if (typeof value !== 'object') {
       setFinanceState(prev => ({ ...prev, [key]: value }))

@@ -10,7 +10,12 @@ interface FinanceAIAnalysisProps {
 
 export default function FinanceAIAnalysis({ financeState }: FinanceAIAnalysisProps) {
     const { age, retirementAge, currentIncome, currentExpenses, assets } = financeState;
-    const totalAssets = Object.values(assets).reduce((a, b) => a + b, 0);
+    const manualAssets = Object.entries(assets)
+        .filter(([key, value]) => typeof value === 'number')
+        .reduce((sum, [_, value]) => sum + (value as number), 0);
+    const trackedStockValue = assets.trackedStocks?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const trackedCryptoValue = assets.trackedCrypto?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const totalAssets = manualAssets + trackedStockValue + trackedCryptoValue;
     const annualExpenses = currentExpenses * 12;
     const annualSavings = (currentIncome - currentExpenses) * 12;
 

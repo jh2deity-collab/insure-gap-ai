@@ -19,7 +19,12 @@ export default function FinanceDashboard({ financeState, onStateChange }: Financ
     // Local state removed, using props
 
     // Calculate Total Assets
-    const totalAssets = Object.values(financeState.assets).reduce((a, b) => a + b, 0);
+    const manualAssetsValue = Object.entries(financeState.assets)
+        .filter(([key, value]) => typeof value === 'number')
+        .reduce((sum, [_, value]) => sum + (value as number), 0);
+    const trackedStockValue = financeState.assets.trackedStocks?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const trackedCryptoValue = financeState.assets.trackedCrypto?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const totalAssets = manualAssetsValue + trackedStockValue + trackedCryptoValue;
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">

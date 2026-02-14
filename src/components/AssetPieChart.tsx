@@ -8,19 +8,26 @@ interface AssetPieChartProps {
 }
 
 export default function AssetPieChart({ assets }: AssetPieChartProps) {
+    const trackedStockValue = assets.trackedStocks?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+    const trackedCryptoValue = assets.trackedCrypto?.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0) || 0;
+
     const data = [
-        { name: '현금', value: assets.cash, color: '#10B981' }, // Emerald
-        { name: '주식', value: assets.stock, color: '#3B82F6' }, // Blue
-        { name: '부동산', value: assets.realEstate, color: '#F59E0B' }, // Amber
-        { name: '기타', value: assets.crypto, color: '#8B5CF6' }, // Violet
+        { name: '현금', value: assets.cash, color: '#10B981' },
+        { name: '주식', value: assets.stock + trackedStockValue, color: '#3B82F6' },
+        { name: '부동산', value: assets.realEstate, color: '#F59E0B' },
+        { name: '연금/보험', value: assets.pension + assets.insurance, color: '#6366F1' },
+        { name: '가상화폐', value: assets.crypto + trackedCryptoValue, color: '#8B5CF6' },
     ].filter(item => item.value > 0);
 
-    const total = Object.values(assets).reduce((a, b) => a + b, 0);
+    const manualTotal = Object.entries(assets)
+        .filter(([key, value]) => typeof value === 'number')
+        .reduce((sum, [_, value]) => sum + (value as number), 0);
+    const total = manualTotal + trackedStockValue + trackedCryptoValue;
 
     if (total === 0) {
         return (
-            <div className="h-[300px] flex items-center justify-center text-slate-500">
-                자산 데이터를 입력해주세요.
+            <div className="h-[300px] flex items-center justify-center text-slate-500 text-sm">
+                자산 데이터를 입력하거나 실시간 자산을 추가해주세요.
             </div>
         )
     }

@@ -6,6 +6,16 @@ export interface CoverageData {
     death: number;
 }
 
+export interface TrackedAsset {
+    id: string;
+    symbol: string;
+    name: string;
+    quantity: number;
+    currentPrice: number;
+    currency: 'KRW' | 'USD';
+    type: 'stock' | 'crypto';
+}
+
 export interface UserState {
     name: string;
     age: number;
@@ -31,6 +41,8 @@ export interface FinanceAssets {
     pension: number; // 개인연금/퇴직연금 자산
     insurance: number; // 보장성/중도환급금 자산
     crypto: number;
+    trackedStocks?: TrackedAsset[];
+    trackedCrypto?: TrackedAsset[];
 }
 
 export interface FinanceState {
