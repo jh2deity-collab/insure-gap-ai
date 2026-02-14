@@ -36,17 +36,12 @@ export default function InputSection({ userState, onChange }: InputSectionProps)
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <div>
                     <Label className="text-slate-400 mb-2 block">생년월일 (Birth Date)</Label>
-                    <div className="relative">
-                        <input
-                            type="date"
-                            value={userState.birthDate}
-                            onChange={(e) => onChange('birthDate', e.target.value)}
-                            className="w-full bg-slate-900 border border-slate-700 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all [color-scheme:dark]"
-                        />
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-blue-600/20 text-blue-400 text-[11px] font-bold px-2 py-0.5 rounded pointer-events-none">
-                            만 {userState.age}세
-                        </div>
-                    </div>
+                    <input
+                        type="date"
+                        value={userState.birthDate}
+                        onChange={(e) => onChange('birthDate', e.target.value)}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-md p-2 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all [color-scheme:dark]"
+                    />
                 </div>
                 <div>
                     <Label className="text-slate-400 mb-2 block">성별 (Gender)</Label>
