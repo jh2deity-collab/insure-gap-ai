@@ -19,6 +19,7 @@ export interface TrackedAsset {
 export interface UserState {
     name: string;
     age: number;
+    birthDate: string;
     gender: 'male' | 'female';
     coverages: CoverageData;
 }
@@ -48,6 +49,7 @@ export interface FinanceAssets {
 export interface FinanceState {
     name: string;
     age: number;
+    birthDate: string;
     gender?: 'male' | 'female';
     retirementAge: number;
     targetMonthlyIncome: number; // 은퇴 후 희망 월 생활비

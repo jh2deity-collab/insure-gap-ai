@@ -70,7 +70,7 @@ export default function ReportPDF({
                         <div className="space-y-6">
                             <h3 className="text-slate-400 font-bold uppercase tracking-widest text-sm">Client Information</h3>
                             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                                <p className="text-2xl font-bold text-slate-800">{(mode === 'insurance' ? userState.name : financeState.name) || "고객"}님 ({mode === 'insurance' ? userState.age : financeState.age}세 {(mode === 'insurance' ? userState.gender : financeState.gender) === 'male' ? '남성' : '여성'})</p>
+                                <p className="text-2xl font-bold text-slate-800">{(mode === 'insurance' ? userState.name : financeState.name) || "고객"}님 ({mode === 'insurance' ? userState.birthDate : financeState.birthDate}생, 만 {mode === 'insurance' ? userState.age : financeState.age}세 {(mode === 'insurance' ? userState.gender : financeState.gender) === 'male' ? '남성' : '여성'})</p>
                                 <p className="text-slate-500 mt-1">{mode === 'insurance' ? '보장 분석' : '재무 설계'} 대상자</p>
                             </div>
                         </div>

@@ -43,13 +43,18 @@ export default function FinanceInput({ financeState, onChange }: FinanceInputPro
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <Label className="text-slate-400 mb-2 block">현재 나이</Label>
-                            <input
-                                type="number"
-                                value={financeState.age}
-                                onChange={(e) => onChange('age', parseInt(e.target.value))}
-                                className="w-full bg-slate-900 border border-slate-700 rounded-md p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                            />
+                            <Label className="text-slate-400 mb-2 block">생년월일 (Birth Date)</Label>
+                            <div className="relative">
+                                <input
+                                    type="date"
+                                    value={financeState.birthDate}
+                                    onChange={(e) => onChange('birthDate', e.target.value)}
+                                    className="w-full bg-slate-900 border border-slate-700 rounded-md p-2.5 text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all [color-scheme:dark]"
+                                />
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 bg-blue-600/20 text-blue-400 text-[11px] font-bold px-2 py-0.5 rounded pointer-events-none">
+                                    만 {financeState.age}세
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <Label className="text-slate-400 mb-2 block">은퇴 목표 나이</Label>

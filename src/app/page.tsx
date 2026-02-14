@@ -6,6 +6,7 @@ import { Shield, Download, BarChart2, RotateCcw, ArrowLeft, TrendingUp } from "l
 
 import { UserState, FinanceState, CoverageData, AnalysisResult, TrackedAsset } from "@/types"
 import { getStandardCoverage, calculateGapScore } from "@/lib/data"
+import { calculateAge } from "@/lib/utils"
 
 // Components
 import DownloadComplete from "@/components/DownloadComplete"
@@ -25,6 +26,7 @@ export default function Home() {
   const [userState, setUserState] = useState<UserState>({
     name: "홍길동",
     age: 35,
+    birthDate: "1991-01-01",
     gender: 'male',
     coverages: {
       cancer: 3000,
@@ -39,6 +41,7 @@ export default function Home() {
   const initialFinanceState: FinanceState = {
     name: "홍길동",
     age: 35,
+    birthDate: "1991-01-01",
     gender: 'male',
     retirementAge: 65,
     targetMonthlyIncome: 300,
@@ -61,6 +64,7 @@ export default function Home() {
   const initialState: UserState = {
     name: "홍길동",
     age: 35,
+    birthDate: "1991-01-01",
     gender: 'male',
     coverages: {
       cancer: 3000,
@@ -136,6 +140,9 @@ export default function Home() {
         ...prev,
         coverages: { ...prev.coverages, [value.key]: value.value }
       }))
+    } else if (key === 'birthDate' && typeof value === 'string') {
+      const calculatedAge = calculateAge(value)
+      setUserState(prev => ({ ...prev, birthDate: value, age: calculatedAge }))
     } else if (typeof value !== 'object') {
       setUserState(prev => ({ ...prev, [key]: value }))
     }
@@ -154,6 +161,9 @@ export default function Home() {
           [value.key]: value.value
         }
       }))
+    } else if (key === 'birthDate' && typeof value === 'string') {
+      const calculatedAge = calculateAge(value)
+      setFinanceState(prev => ({ ...prev, birthDate: value, age: calculatedAge }))
     } else if (typeof value !== 'object') {
       setFinanceState(prev => ({ ...prev, [key]: value }))
     }
