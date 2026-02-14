@@ -68,14 +68,26 @@ export default function MarketAssetInput({ type, onAssetsChange, initialAssets =
     const totalValue = assets.reduce((sum, a) => sum + (a.quantity * a.currentPrice), 0)
 
     return (
-        <div className="bg-slate-900/60 rounded-2xl border border-slate-700/80 p-6 mt-4 shadow-xl">
-            <div className="flex items-center justify-between mb-5">
-                <h4 className="text-white text-sm font-black flex items-center gap-2">
-                    {type === 'stock' ? <TrendingUp className="w-4 h-4 text-blue-400" /> : <Wallet className="w-4 h-4 text-emerald-400" />}
-                    실시간 {type === 'stock' ? '주식' : '코인'} 포트폴리오
-                </h4>
-                <div className="bg-slate-800 px-3 py-1 rounded-full border border-slate-700 text-slate-400 text-[11px] font-mono">
-                    Total: <span className="text-white font-bold">{(totalValue / 1).toLocaleString()}</span> 만원
+        <div className="bg-slate-900/60 rounded-3xl border border-slate-700/80 p-6 mt-4 shadow-2xl relative overflow-hidden">
+            {/* Background Accent */}
+            <div className={`absolute -top-10 -right-10 w-32 h-32 opacity-10 blur-3xl rounded-full ${type === 'stock' ? 'bg-blue-500' : 'bg-emerald-500'}`} />
+
+            <div className="flex flex-col gap-4 mb-6">
+                <div className="flex items-center gap-2">
+                    <div className={`p-2 rounded-lg ${type === 'stock' ? 'bg-blue-500/20 text-blue-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                        {type === 'stock' ? <TrendingUp className="w-5 h-5" /> : <Wallet className="w-5 h-5" />}
+                    </div>
+                    <h4 className="text-white text-base font-black tracking-tight">
+                        실시간 {type === 'stock' ? '주식' : '코인'} 자산 합계
+                    </h4>
+                </div>
+
+                <div className="bg-slate-800/50 border border-slate-700/50 rounded-2xl p-5 text-center">
+                    <p className="text-slate-500 text-xs font-bold uppercase tracking-widest mb-1">Total Estimated Value</p>
+                    <p className={`text-4xl font-black font-mono tracking-tighter ${type === 'stock' ? 'text-blue-400' : 'text-emerald-400'}`}>
+                        {totalValue.toLocaleString()}
+                        <span className="text-lg font-bold text-slate-500 ml-1">만원</span>
+                    </p>
                 </div>
             </div>
 
